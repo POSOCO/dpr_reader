@@ -295,13 +295,106 @@ function fetchFromArrays(ind) {
         WriteLineConsole("DNH 19HrsDemand is " + dem19hrs);
         WriteLineConsole("DNH 20HrsDemand is " + dem20hrs);
     }
+    else if (ind == 1) {
+        //DD DATA
+        drawal = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        dem24Hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        var ddDataArray = dprReader.filesAfterReadArrays[consIDs[1]][0];
+        for (var i = 0; i < ddDataArray.length; i++) {
+            row = ddDataArray[i];
+            val = findNonNullValueByTag(row, "Total Energy Consumption");
+            if (val != null) {
+                drawal = val;
+            }
+            val = findColumnIndexOfStr(row, "Hours ");
+            if (!(isNaN(val)) && val >= 0) {
+                timeBlkCol = val;
+            }
+            val = findColumnIndexOfStr(row, "Demand");
+            if (!(isNaN(val)) && val >= 0) {
+                demandCol = val;
+            }
+        }
+        //find the 1stTimeBlk row
+        firstBlkRow = findRowIndexOfStrInCol(ddDataArray, timeBlkCol, 1, true);
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = ddDataArray[firstBlkRow + hr - 1][demandCol];
+            }
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        WriteLineConsole("DD drawal is " + drawal);
+        WriteLineConsole("DD maxDemand is " + maxDem);
+        WriteLineConsole("DD maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("DD 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("DD 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("DD 20HrsDemand is " + dem20hrs);
+    }
+    else if (ind == 4) {
+        //GOA DATA
+        drawal = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        dem24Hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        var goaDataArray = dprReader.filesAfterReadArrays[consIDs[4]][0];
+        for (var i = 0; i < goaDataArray.length; i++) {
+            row = goaDataArray[i];
+            val = findNonNullValueByTag(row, "1) WR");
+            if (val != null) {
+                drawal = val / 1000000;
+            }
+            val = findColumnIndexOfStr(row, "Hrs");
+            if (!(isNaN(val)) && val >= 0) {
+                timeBlkCol = val;
+            }
+            val = findColumnIndexOfStr(row, "Demand in MW");
+            if (!(isNaN(val)) && val >= 0) {
+                demandCol = val;
+            }
+        }
+        //find the 1stTimeBlk row
+        firstBlkRow = findRowIndexOfStrInCol(goaDataArray, timeBlkCol, 1, true);
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 1]) + Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 2]) + Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 3]);
+            }
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        WriteLineConsole("GOA drawal is " + drawal);
+        WriteLineConsole("GOA maxDemand is " + maxDem);
+        WriteLineConsole("GOA maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("GOA 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("GOA 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("GOA 20HrsDemand is " + dem20hrs);
+    }
 }
 
 function indexOfMax(arr) {
     if (arr.length === 0) {
         return -1;
     }
-
     var max = arr[0];
     var maxIndex = 0;
 
@@ -311,7 +404,6 @@ function indexOfMax(arr) {
             max = arr[i];
         }
     }
-
     return maxIndex;
 }
 
