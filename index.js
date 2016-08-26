@@ -70,16 +70,18 @@ function fetchFromArrays(ind) {
                 loadSheddingCol = val;
             }
         }
-        if (availabilityAux != null && availabilityExc != null) {
-            availability = Number(availabilityAux) + Number(availabilityExc);
-        }
         //find the 1stTimeBlk row
         firstBlkRow = findRowIndexOfStrInCol(csebArray, timeBlkCol, 1, true);
-        for (var hr = 1; hr <= 24; hr++) {
-            dem24Hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][demandCol];
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][demandCol];
+            }
+            for (var hr = 1; hr <= 24; hr++) {
+                loadShedding24hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][loadSheddingCol] + csebArray[firstBlkRow + hr - 1][loadSheddingCol + 1];
+            }
         }
-        for (var hr = 1; hr <= 24; hr++) {
-            loadShedding24hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][loadSheddingCol];
+        if (availabilityAux != null && availabilityExc != null) {
+            availability = Number(availabilityAux) + Number(availabilityExc);
         }
         maxDemTime = indexOfMax(dem24Hrs) + 1;
         maxDem = dem24Hrs[maxDemTime - 1];
@@ -98,6 +100,200 @@ function fetchFromArrays(ind) {
                 return pv + cv;
             }, 0) / 1000 + " MUs");
 
+    } else if (ind == 6) {
+        //MP data
+        hydroGen = "NA";
+        var hydroGen1 = "NA";
+        var hydroGen2 = "NA";
+        var solarGen = "NA";
+        var windGen = "NA";
+        drawal = "NA";
+        availabilityExc = "NA";
+        availabilityAux = "NA";
+        availability = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        loadSheddingCol = -1;
+        dem24Hrs = [];
+        loadShedding24hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        for (var k = 0; k < 2; k++) {
+            var mpDataArray = dprReader.filesAfterReadArrays[consIDs[6]][k];
+            for (var i = 0; i < mpDataArray.length; i++) {
+                row = mpDataArray[i];
+                val = findNonNullValueByTag(row, "MP HYDEL");
+                if (val != null) {
+                    hydroGen = val / 10;
+                }
+                val = findNonNullValueByTag(row, "Indira Sagar");
+                if (val != null) {
+                    hydroGen1 = val / 10;
+                }
+                val = findNonNullValueByTag(row, "Omkareshwar");
+                if (val != null) {
+                    hydroGen2 = val / 10;
+                }
+                val = findNonNullValueByTag(row, "MP Drawal LU");
+                if (val != null) {
+                    drawal = val / 10;
+                }
+                val = findNonNullValueByTag(row, "M.P.Supply Excl");
+                if (val != null) {
+                    availabilityExc = val / 10;
+                }
+                val = findNonNullValueByTag(row, "Aux.Cons.  LU");
+                if (val != null) {
+                    availabilityAux = val / 10;
+                }
+                val = findNonNullValueByTag(row, "Wind Injection");
+                if (val != null) {
+                    windGen = val / 10;
+                }
+                val = findNonNullValueByTag(row, "Solar Injection");
+                if (val != null) {
+                    solarGen = val / 10;
+                }
+                val = findColumnIndexOfStr(row, "HOURS");
+                if (!(isNaN(val)) && val >= 0) {
+                    timeBlkCol = val;
+                }
+                val = findColumnIndexOfStr(row, "CATERED\nDEMAND\nIncl Aux.Cons.");
+                if (!(isNaN(val)) && val >= 0) {
+                    demandCol = val;
+                }
+                val = findColumnIndexOfStr(row, " L.S.");
+                if (!(isNaN(val)) && val >= 0) {
+                    loadSheddingCol = val;
+                }
+            }
+            //find the 1stTimeBlk row
+            firstBlkRow = findRowIndexOfStrInCol(mpDataArray, timeBlkCol, 1, true);
+            if (firstBlkRow != -1) {
+                for (var hr = 1; hr <= 24; hr++) {
+                    dem24Hrs[hr - 1] = mpDataArray[firstBlkRow + hr - 1][demandCol];
+                }
+                for (var hr = 1; hr <= 24; hr++) {
+                    loadShedding24hrs[hr - 1] = mpDataArray[firstBlkRow + hr - 1][loadSheddingCol] + mpDataArray[firstBlkRow + hr - 1][loadSheddingCol + 1];
+                }
+            }
+        }
+        if (availabilityAux != null && availabilityExc != null) {
+            availability = Number(availabilityAux) + Number(availabilityExc);
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        WriteLineConsole("MP Hydro generation is " + (hydroGen + hydroGen1 + hydroGen2));
+        WriteLineConsole("MP drawal is " + drawal);
+        WriteLineConsole("MP availability is " + availability);
+        WriteLineConsole("MP maxDemand is " + maxDem);
+        WriteLineConsole("MP maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("MP 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("MP 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("MP 20HrsDemand is " + dem20hrs);
+        WriteLineConsole("MP LoadShedding is " + loadShedding24hrs.reduce(function (pv, cv) {
+                return pv + cv;
+            }, 0) / 1000 + " MUs");
+    } else if (ind == 3) {
+        //ESIL DATA
+        drawal = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        dem24Hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        var esilDataArray = dprReader.filesAfterReadArrays[consIDs[3]][0];
+        for (var i = 0; i < esilDataArray.length; i++) {
+            row = esilDataArray[i];
+            val = findNonNullValueByTag(row, "Total energy consumption from ISTS:");
+            if (val != null) {
+                drawal = val;
+            }
+            val = findColumnIndexOfStr(row, "Time");
+            if (!(isNaN(val)) && val >= 0) {
+                timeBlkCol = val;
+            }
+            val = findColumnIndexOfStr(row, "Total ESIL Load (MW)");
+            if (!(isNaN(val)) && val >= 0) {
+                demandCol = val;
+            }
+        }
+        //find the 1stTimeBlk row
+        firstBlkRow = findRowIndexOfStrInCol(esilDataArray, timeBlkCol, "00 -01 hrs.", false);
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = esilDataArray[firstBlkRow + hr - 1][demandCol];
+            }
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        WriteLineConsole("ESIL drawal is " + drawal);
+        WriteLineConsole("ESIL maxDemand is " + maxDem);
+        WriteLineConsole("ESIL maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("ESIL 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("ESIL 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("ESIL 20HrsDemand is " + dem20hrs);
+    }
+    else if (ind == 2) {
+        //DNH DATA
+        drawal = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        dem24Hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        var dnhDataArray = dprReader.filesAfterReadArrays[consIDs[2]][0];
+        for (var i = 0; i < dnhDataArray.length; i++) {
+            row = dnhDataArray[i];
+            val = findNonNullValueByTag(row, "Total Energy Consumption");
+            if (val != null) {
+                drawal = val;
+            }
+            val = findColumnIndexOfStr(row, "Hours");
+            if (!(isNaN(val)) && val >= 0) {
+                timeBlkCol = val;
+            }
+            val = findColumnIndexOfStr(row, "Demand");
+            if (!(isNaN(val)) && val >= 0) {
+                demandCol = val;
+            }
+        }
+        //find the 1stTimeBlk row
+        firstBlkRow = findRowIndexOfStrInCol(dnhDataArray, timeBlkCol, 0, true);
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = dnhDataArray[firstBlkRow + hr - 1][demandCol];
+            }
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        WriteLineConsole("DNH drawal is " + drawal);
+        WriteLineConsole("DNH maxDemand is " + maxDem);
+        WriteLineConsole("DNH maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("DNH 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("DNH 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("DNH 20HrsDemand is " + dem20hrs);
     }
 }
 
@@ -124,10 +320,13 @@ function findColumnIndexOfStr(row, tag) {
 }
 
 function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber) {
+    if (colIndex == -1) {
+        return -1;
+    }
     for (var i = 0; i < 100; i++) {
         var cellVal = reportArray[i][colIndex];
         if (isNumber) {
-            if (!isNaN(cellVal) && Number(val) == Number(cellVal)) {
+            if (!isNaN(cellVal) && cellVal.trim() != "" && Number(val) == Number(cellVal)) {
                 return i;
             }
         } else {

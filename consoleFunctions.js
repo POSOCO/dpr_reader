@@ -6,13 +6,7 @@ function WriteLineConsole(str, tag) {
     var mConsole = document.getElementById("console");
     var currentDate = new Date();
     var para = document.createElement("span");
-    var n = currentDate.getDate() + "/"
-        + (currentDate.getMonth() + 1) + "/"
-        + currentDate.getFullYear() + " @ "
-        + currentDate.getHours() + ":"
-        + currentDate.getMinutes() + ":"
-        + currentDate.getSeconds() + " - ";
-    var node = document.createTextNode(n + str);
+    var node = document.createTextNode(str);
     para.appendChild(node);
     //mConsole.appendChild(para);
     mConsole.insertBefore(para, mConsole.firstChild);
