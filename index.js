@@ -389,6 +389,129 @@ function fetchFromArrays(ind) {
         WriteLineConsole("GOA 19HrsDemand is " + dem19hrs);
         WriteLineConsole("GOA 20HrsDemand is " + dem20hrs);
     }
+    else if (ind == 5) {
+        //GUJARAT DATA
+        hydroGen = "NA";
+        hydroGen1 = "NA";
+        hydroGen2 = "NA";
+        var hydroGen3 = "NA";
+        windGen = "NA";
+        solarGen = "NA";
+        var requirement = "NA";
+        drawal = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        dem24Hrs = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        var uhpsrow = -1;
+        var uhpscol = -1;
+        var khpsrow = -1;
+        var khpscol = -1;
+        var lbcpanamhydro = -1;
+        var pvthydro = -1;
+        var gujaratDataArray = dprReader.filesAfterReadArrays[consIDs[5]][0];
+        for (var i = 0; i < gujaratDataArray.length; i++) {
+            row = gujaratDataArray[i];
+            val = findNonNullValueByTag(row, "WIND FARM");
+            if (val != null) {
+                windGen = val;
+            }
+            val = findNonNullValueByTag(row, "SOLAR ENERGY");
+            if (val != null) {
+                solarGen = val;
+            }
+            val = findNonNullValueByTag(row, "UN-RESTRICTED DEMAND");
+            if (val != null) {
+                requirement = val;
+            }
+            val = findNonNullValueByTag(row, "CATERED");
+            if (val != null) {
+                availability = val;
+            }
+            val = findColumnIndexOfStr(row, "TIME HOURS");
+            if (!(isNaN(val)) && val >= 0) {
+                timeBlkCol = val;
+            }
+            val = findColumnIndexOfStr(row, "GUJARAT CATERED");
+            if (!(isNaN(val)) && val >= 0) {
+                demandCol = val;
+            }
+            val = findColumnIndexOfStr(row, "FREQ. CORRECT");
+            if (!(isNaN(val)) && val >= 0) {
+                loadSheddingCol = val - 1;
+            }
+            val = findColumnIndexOfStr(row, "UHPS");
+            if (!(isNaN(val)) && val >= 0) {
+                uhpscol = val;
+                uhpsrow = i;
+            }
+            val = findColumnIndexOfStr(row, "KHPS");
+            if (!(isNaN(val)) && val >= 0) {
+                khpscol = val;
+                khpsrow = i;
+            }
+            val = findNonNullValueByTag(row, "LBC + PANAM");
+            if (val != null) {
+                lbcpanamhydro = val;
+            }
+            val = findNonNullValueByTag(row, "PVT HYDRO");
+            if (val != null) {
+                pvthydro = val;
+            }
+        }
+        //find the 1stTimeBlk row
+        firstBlkRow = findRowIndexOfStrInCol(gujaratDataArray, timeBlkCol, 1, true);
+        if (firstBlkRow != -1) {
+            for (var hr = 1; hr <= 24; hr++) {
+                dem24Hrs[hr - 1] = Number(gujaratDataArray[firstBlkRow + hr - 1][demandCol]);
+            }
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        //find the uhpshydro value
+        if (uhpsrow != -1) {
+            var uhpstotalrow = findRowIndexOfStrInCol(gujaratDataArray, uhpscol + 1, "TOTAL", false, uhpsrow);
+            var uhpshydro = "NA";
+            if (uhpstotalrow != -1) {
+                row = gujaratDataArray[uhpstotalrow];
+                val = findNonNullValueByTag(row, "TOTAL");
+                if (val != null) {
+                    uhpshydro = val;
+                }
+            }
+        }
+        //find the khpshydro value
+        if (khpsrow != -1) {
+            var khpstotalrow = findRowIndexOfStrInCol(gujaratDataArray, khpscol + 1, "TOTAL", false, khpsrow);
+            var khpshydro = "NA";
+            if (khpstotalrow != -1) {
+                row = gujaratDataArray[khpstotalrow];
+                val = findNonNullValueByTag(row, "TOTAL");
+                if (val != null) {
+                    khpshydro = val;
+                }
+            }
+        }
+        WriteLineConsole("GUJARAT drawal is " + drawal);
+        WriteLineConsole("GUJARAT availability is " + availability);
+        WriteLineConsole("GUJARAT requirement is " + requirement);
+        WriteLineConsole("GUJARAT solar generation is " + solarGen);
+        WriteLineConsole("GUJARAT wind generation is " + windGen);
+        WriteLineConsole("GUJARAT hydro generation is " + (Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro) + Number(lbcpanamhydro)));
+        WriteLineConsole("GUJARAT maxDemand is " + maxDem);
+        WriteLineConsole("GUJARAT maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("GUJARAT 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("GUJARAT 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("GUJARAT 20HrsDemand is " + dem20hrs);
+    }
 }
 
 function indexOfMax(arr) {
@@ -411,11 +534,14 @@ function findColumnIndexOfStr(row, tag) {
     return row.indexOf(tag);
 }
 
-function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber) {
+function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber, startRowToSearch) {
+    if (startRowToSearch == null || startRowToSearch < 0 || isNaN(startRowToSearch)) {
+        startRowToSearch = 0;
+    }
     if (colIndex == -1) {
         return -1;
     }
-    for (var i = 0; i < 100; i++) {
+    for (var i = startRowToSearch; i < 100; i++) {
         var cellVal = reportArray[i][colIndex];
         if (isNumber) {
             if (!isNaN(cellVal) && cellVal.trim() != "" && Number(val) == Number(cellVal)) {
