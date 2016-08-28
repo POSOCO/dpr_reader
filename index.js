@@ -409,6 +409,7 @@ function fetchFromArrays(ind) {
         dem3hrs = -1;
         dem19hrs = -1;
         dem20hrs = -1;
+        var pageends = [];
         var uhpsrow = -1;
         var uhpscol = -1;
         var khpsrow = -1;
@@ -464,6 +465,11 @@ function fetchFromArrays(ind) {
             val = findNonNullValueByTag(row, "PVT HYDRO");
             if (val != null) {
                 pvthydro = val;
+            }
+            //Each page ends with 1 and a blank row after that row. Using this we are going to find the page ending cells
+            //row = row.map(Function.prototype.call, String.prototype.trim) //trim whole the row
+            if(row.length == row.reduce(function(n, val) {return n + (val === "");}, 0) + 1 && gujaratDataArray[i+1].length == gujaratDataArray[i+1].reduce(function(n, val) {return n + (val === "");}, 0) && row[0] == "1"){
+                pageends.push(i+1);
             }
         }
         //find the 1stTimeBlk row
