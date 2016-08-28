@@ -399,6 +399,7 @@ function fetchFromArrays(ind) {
         solarGen = "NA";
         var requirement = "NA";
         drawal = "NA";
+        var timeBlkRow = -1;
         timeBlkCol = -1;
         firstBlkRow = -1;
         demandCol = -1;
@@ -435,6 +436,7 @@ function fetchFromArrays(ind) {
             }
             val = findColumnIndexOfStr(row, "TIME HOURS");
             if (!(isNaN(val)) && val >= 0) {
+                timeBlkRow = i;
                 timeBlkCol = val;
             }
             val = findColumnIndexOfStr(row, "GUJARAT CATERED");
@@ -465,10 +467,12 @@ function fetchFromArrays(ind) {
             }
         }
         //find the 1stTimeBlk row
-        firstBlkRow = findRowIndexOfStrInCol(gujaratDataArray, timeBlkCol, 1, true);
-        if (firstBlkRow != -1) {
-            for (var hr = 1; hr <= 24; hr++) {
-                dem24Hrs[hr - 1] = Number(gujaratDataArray[firstBlkRow + hr - 1][demandCol]);
+        if(timeBlkCol >= 0 && !isNaN(timeBlkCol)){
+            firstBlkRow = findRowIndexOfStrInCol(gujaratDataArray, timeBlkCol, 1, true, timeBlkRow);
+            if (firstBlkRow != -1) {
+                for (var hr = 1; hr <= 24; hr++) {
+                    dem24Hrs[hr - 1] = Number(gujaratDataArray[firstBlkRow + hr - 1][demandCol]);
+                }
             }
         }
         maxDemTime = indexOfMax(dem24Hrs) + 1;
