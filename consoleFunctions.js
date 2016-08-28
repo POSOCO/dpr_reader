@@ -8,8 +8,8 @@ function WriteLineConsole(str, tag) {
     var para = document.createElement("span");
     var node = document.createTextNode(str);
     para.appendChild(node);
-    //mConsole.appendChild(para);
-    mConsole.insertBefore(para, mConsole.firstChild);
+    mConsole.appendChild(para);
+    //mConsole.insertBefore(para, mConsole.firstChild);
     doStyling(para.style, tag);
 }
 

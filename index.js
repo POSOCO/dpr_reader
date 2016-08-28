@@ -77,7 +77,7 @@ function fetchFromArrays(ind) {
                 dem24Hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][demandCol];
             }
             for (var hr = 1; hr <= 24; hr++) {
-                loadShedding24hrs[hr - 1] = csebArray[firstBlkRow + hr - 1][loadSheddingCol] + csebArray[firstBlkRow + hr - 1][loadSheddingCol + 1];
+                loadShedding24hrs[hr - 1] = Number(csebArray[firstBlkRow + hr - 1][loadSheddingCol]) + Number(csebArray[firstBlkRow + hr - 1][loadSheddingCol + 1]);
             }
         }
         if (availabilityAux != null && availabilityExc != null) {
@@ -88,6 +88,27 @@ function fetchFromArrays(ind) {
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        var shortFallMUs = loadShedding24hrs.reduce(function (pv, cv) {
+                return pv + cv;
+            }, 0) / 1000;
+        WriteLineConsole("*********** CSEB DATA ***********");
+        WriteLineConsole("a");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole("a");
+        WriteLineConsole(drawal);
+        WriteLineConsole("a");
+        WriteLineConsole(availability);
+        WriteLineConsole(shortFallMUs);
+        WriteLineConsole("a");
+        WriteLineConsole(hydroGen);
+        WriteLineConsole("a");
+        WriteLineConsole(maxDem);
+        WriteLineConsole(loadShedding24hrs[maxDemTime - 1]);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(loadShedding24hrs[2]);
+        WriteLineConsole("*********** CSEB DATA ***********");
         WriteLineConsole("CSEB Hydro generation is " + hydroGen);
         WriteLineConsole("CSEB drawal is " + drawal);
         WriteLineConsole("CSEB availability is " + availability);
@@ -96,9 +117,7 @@ function fetchFromArrays(ind) {
         WriteLineConsole("CSEB 3HrsDemand is " + dem3hrs);
         WriteLineConsole("CSEB 19HrsDemand is " + dem19hrs);
         WriteLineConsole("CSEB 20HrsDemand is " + dem20hrs);
-        WriteLineConsole("CSEB LoadShedding is " + loadShedding24hrs.reduce(function (pv, cv) {
-                return pv + cv;
-            }, 0) / 1000 + " MUs");
+        WriteLineConsole("CSEB LoadShedding is " + shortFallMUs + " MUs");
 
     } else if (ind == 6) {
         //MP data
@@ -178,7 +197,7 @@ function fetchFromArrays(ind) {
                     dem24Hrs[hr - 1] = mpDataArray[firstBlkRow + hr - 1][demandCol];
                 }
                 for (var hr = 1; hr <= 24; hr++) {
-                    loadShedding24hrs[hr - 1] = mpDataArray[firstBlkRow + hr - 1][loadSheddingCol] + mpDataArray[firstBlkRow + hr - 1][loadSheddingCol + 1];
+                    loadShedding24hrs[hr - 1] = Number(mpDataArray[firstBlkRow + hr - 1][loadSheddingCol]) + Number(mpDataArray[firstBlkRow + hr - 1][loadSheddingCol + 1]);
                 }
             }
         }
@@ -190,7 +209,30 @@ function fetchFromArrays(ind) {
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        var shortFallMUs = loadShedding24hrs.reduce(function (pv, cv) {
+                return pv + cv;
+            }, 0) / 1000;
+        WriteLineConsole("*********** MP DATA ***********");
+        WriteLineConsole("a");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole("a");
+        WriteLineConsole(drawal);
+        WriteLineConsole("a");
+        WriteLineConsole(availability);
+        WriteLineConsole(shortFallMUs);
+        WriteLineConsole(solarGen);
+        WriteLineConsole(hydroGen + hydroGen1 + hydroGen2);
+        WriteLineConsole(windGen);
+        WriteLineConsole(maxDem);
+        WriteLineConsole(loadShedding24hrs[maxDemTime - 1]);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(loadShedding24hrs[2]);
+        WriteLineConsole("*********** MP DATA ***********");
         WriteLineConsole("MP Hydro generation is " + (hydroGen + hydroGen1 + hydroGen2));
+        WriteLineConsole("MP Solar Generation is " + solarGen);
+        WriteLineConsole("MP Wind Generation is " + windGen);
         WriteLineConsole("MP drawal is " + drawal);
         WriteLineConsole("MP availability is " + availability);
         WriteLineConsole("MP maxDemand is " + maxDem);
@@ -198,9 +240,7 @@ function fetchFromArrays(ind) {
         WriteLineConsole("MP 3HrsDemand is " + dem3hrs);
         WriteLineConsole("MP 19HrsDemand is " + dem19hrs);
         WriteLineConsole("MP 20HrsDemand is " + dem20hrs);
-        WriteLineConsole("MP LoadShedding is " + loadShedding24hrs.reduce(function (pv, cv) {
-                return pv + cv;
-            }, 0) / 1000 + " MUs");
+        WriteLineConsole("MP LoadShedding is " + shortFallMUs + " MUs");
     } else if (ind == 3) {
         //ESIL DATA
         drawal = "NA";
@@ -419,61 +459,77 @@ function fetchFromArrays(ind) {
         var gujaratDataArray = dprReader.filesAfterReadArrays[consIDs[5]][0];
         for (var i = 0; i < gujaratDataArray.length; i++) {
             row = gujaratDataArray[i];
-            val = findNonNullValueByTag(row, "WIND FARM");
-            if (val != null) {
-                windGen = val;
-            }
-            val = findNonNullValueByTag(row, "SOLAR ENERGY");
-            if (val != null) {
-                solarGen = val;
-            }
-            val = findNonNullValueByTag(row, "UN-RESTRICTED DEMAND");
-            if (val != null) {
-                requirement = val;
-            }
-            val = findNonNullValueByTag(row, "CATERED");
-            if (val != null) {
-                availability = val;
-            }
-            val = findColumnIndexOfStr(row, "TIME HOURS");
-            if (!(isNaN(val)) && val >= 0) {
-                timeBlkRow = i;
-                timeBlkCol = val;
-            }
-            val = findColumnIndexOfStr(row, "GUJARAT CATERED");
-            if (!(isNaN(val)) && val >= 0) {
-                demandCol = val;
-            }
-            val = findColumnIndexOfStr(row, "FREQ. CORRECT");
-            if (!(isNaN(val)) && val >= 0) {
-                loadSheddingCol = val - 1;
-            }
-            val = findColumnIndexOfStr(row, "UHPS");
-            if (!(isNaN(val)) && val >= 0) {
-                uhpscol = val;
-                uhpsrow = i;
-            }
-            val = findColumnIndexOfStr(row, "KHPS");
-            if (!(isNaN(val)) && val >= 0) {
-                khpscol = val;
-                khpsrow = i;
-            }
-            val = findNonNullValueByTag(row, "LBC + PANAM");
-            if (val != null) {
-                lbcpanamhydro = val;
-            }
-            val = findNonNullValueByTag(row, "PVT HYDRO");
-            if (val != null) {
-                pvthydro = val;
-            }
+
             //Each page ends with 1 and a blank row after that row. Using this we are going to find the page ending cells
             //row = row.map(Function.prototype.call, String.prototype.trim) //trim whole the row
-            if(row.length == row.reduce(function(n, val) {return n + (val === "");}, 0) + 1 && gujaratDataArray[i+1].length == gujaratDataArray[i+1].reduce(function(n, val) {return n + (val === "");}, 0) && row[0] == "1"){
-                pageends.push(i+1);
+            if (row.length == row.reduce(function (n, val) {
+                    return n + (val === "");
+                }, 0) + 1 && gujaratDataArray[i + 1].length == gujaratDataArray[i + 1].reduce(function (n, val) {
+                    return n + (val === "");
+                }, 0) && row[0] == "1") {
+                pageends.push(i + 1);
+            }
+            if (pageends.length == 0) {
+                //Row in page 1
+                val = findNonNullValueByTag(row, "WIND FARM");
+                if (val != null) {
+                    windGen = val;
+                }
+                val = findNonNullValueByTag(row, "SOLAR ENERGY");
+                if (val != null) {
+                    solarGen = val;
+                }
+                val = findColumnIndexOfStr(row, "UHPS");
+                if (!(isNaN(val)) && val >= 0) {
+                    uhpscol = val;
+                    uhpsrow = i;
+                }
+                val = findColumnIndexOfStr(row, "KHPS");
+                if (!(isNaN(val)) && val >= 0) {
+                    khpscol = val;
+                    khpsrow = i;
+                }
+                val = findNonNullValueByTag(row, "LBC + PANAM");
+                if (val != null) {
+                    lbcpanamhydro = val;
+                }
+                val = findNonNullValueByTag(row, "PVT HYDRO");
+                if (val != null) {
+                    pvthydro = val;
+                }
+            } else if (pageends.length > 0 && pageends.length < 2) {
+                //Row in page 2
+                val = findNonNullValueByTag(row, "TOTAL");
+                if (val != null) {
+                    drawal = val;
+                }
+                val = findNonNullValueByTag(row, "UN-RESTRICTED DEMAND");
+                if (val != null) {
+                    requirement = val;
+                }
+                val = findNonNullValueByTag(row, "CATERED");
+                if (val != null) {
+                    availability = val;
+                }
+            } else {
+                //Row in Page 3
+                val = findColumnIndexOfStr(row, "TIME HOURS");
+                if (!(isNaN(val)) && val >= 0) {
+                    timeBlkRow = i;
+                    timeBlkCol = val;
+                }
+                val = findColumnIndexOfStr(row, "GUJARAT CATERED");
+                if (!(isNaN(val)) && val >= 0) {
+                    demandCol = val;
+                }
+                val = findColumnIndexOfStr(row, "FREQ. CORRECT");
+                if (!(isNaN(val)) && val >= 0) {
+                    loadSheddingCol = val - 1;
+                }
             }
         }
         //find the 1stTimeBlk row
-        if(timeBlkCol >= 0 && !isNaN(timeBlkCol)){
+        if (timeBlkCol >= 0 && !isNaN(timeBlkCol)) {
             firstBlkRow = findRowIndexOfStrInCol(gujaratDataArray, timeBlkCol, 1, true, timeBlkRow);
             if (firstBlkRow != -1) {
                 for (var hr = 1; hr <= 24; hr++) {
@@ -481,11 +537,6 @@ function fetchFromArrays(ind) {
                 }
             }
         }
-        maxDemTime = indexOfMax(dem24Hrs) + 1;
-        maxDem = dem24Hrs[maxDemTime - 1];
-        dem3hrs = dem24Hrs[2];
-        dem19hrs = dem24Hrs[18];
-        dem20hrs = dem24Hrs[19];
         //find the uhpshydro value
         if (uhpsrow != -1) {
             var uhpstotalrow = findRowIndexOfStrInCol(gujaratDataArray, uhpscol + 1, "TOTAL", false, uhpsrow);
@@ -510,12 +561,36 @@ function fetchFromArrays(ind) {
                 }
             }
         }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        hydroGen = Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro) + Number(lbcpanamhydro);
+        WriteLineConsole("*********** GUJARAT DATA ***********");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("a");
+        WriteLineConsole(drawal);
+        WriteLineConsole(requirement);
+        WriteLineConsole(availability);
+        WriteLineConsole(requirement - availability);
+        WriteLineConsole(solarGen);
+        WriteLineConsole(hydroGen);
+        WriteLineConsole(windGen);
+        WriteLineConsole(maxDem);
+        WriteLineConsole(0);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("*********** GUJARAT DATA ***********");
         WriteLineConsole("GUJARAT drawal is " + drawal);
         WriteLineConsole("GUJARAT availability is " + availability);
         WriteLineConsole("GUJARAT requirement is " + requirement);
         WriteLineConsole("GUJARAT solar generation is " + solarGen);
         WriteLineConsole("GUJARAT wind generation is " + windGen);
-        WriteLineConsole("GUJARAT hydro generation is " + (Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro) + Number(lbcpanamhydro)));
+        WriteLineConsole("GUJARAT hydro generation is " + hydroGen);
         WriteLineConsole("GUJARAT maxDemand is " + maxDem);
         WriteLineConsole("GUJARAT maxDemand is at " + maxDemTime + " hrs");
         WriteLineConsole("GUJARAT 3HrsDemand is " + dem3hrs);
