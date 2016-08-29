@@ -4,19 +4,22 @@
 //Console Functions
 function WriteLineConsole(str, tag) {
     var mConsole = document.getElementById("console");
-    var currentDate = new Date();
-    var para = document.createElement("span");
-    var node = document.createTextNode(str);
-    para.appendChild(node);
-    mConsole.appendChild(para);
-    //mConsole.insertBefore(para, mConsole.firstChild);
-    doStyling(para.style, tag);
+    if (str === "") {
+        mConsole.appendChild(document.createElement("br"));
+    } else {
+        var para = document.createElement("div");
+        var node = document.createTextNode(str);
+        para.appendChild(node);
+        mConsole.appendChild(para);
+        //mConsole.insertBefore(para, mConsole.firstChild);
+        doStyling(para.style, tag, "small");
+    }
 }
 
 //Console Functions
-function doStyling(style, tag) {
+function doStyling(style, tag, fontSize) {
     style.display = 'block';
-    style.fontSize = '0.9em';
+    style.fontSize = fontSize ? fontSize : "0.8em";
     style.fontFamily = "Courier New";
     if (tag == 'error') {
         style.color = 'red';

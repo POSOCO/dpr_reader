@@ -92,17 +92,17 @@ function fetchFromArrays(ind) {
                 return pv + cv;
             }, 0) / 1000;
         WriteLineConsole("*********** CSEB DATA ***********");
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(dem20hrs);
         WriteLineConsole(loadShedding24hrs[19]);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(drawal);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(availability);
         WriteLineConsole(shortFallMUs);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(hydroGen);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(maxDem);
         WriteLineConsole(loadShedding24hrs[maxDemTime - 1]);
         WriteLineConsole(maxDemTime);
@@ -213,12 +213,12 @@ function fetchFromArrays(ind) {
                 return pv + cv;
             }, 0) / 1000;
         WriteLineConsole("*********** MP DATA ***********");
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(dem20hrs);
         WriteLineConsole(loadShedding24hrs[19]);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(drawal);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(availability);
         WriteLineConsole(shortFallMUs);
         WriteLineConsole(solarGen);
@@ -281,6 +281,24 @@ function fetchFromArrays(ind) {
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        WriteLineConsole("*********** ESIL DATA ***********");
+        WriteLineConsole("");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("");
+        WriteLineConsole(drawal);
+        WriteLineConsole("");
+        WriteLineConsole(0);
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole(maxDem);
+        WriteLineConsole(0);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("*********** ESIL DATA ***********");
         WriteLineConsole("ESIL drawal is " + drawal);
         WriteLineConsole("ESIL maxDemand is " + maxDem);
         WriteLineConsole("ESIL maxDemand is at " + maxDemTime + " hrs");
@@ -328,6 +346,24 @@ function fetchFromArrays(ind) {
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        WriteLineConsole("*********** DNH DATA ***********");
+        WriteLineConsole("");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("");
+        WriteLineConsole(drawal);
+        WriteLineConsole(drawal);
+        WriteLineConsole(drawal);
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole(maxDem);
+        WriteLineConsole(0);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("*********** DNH DATA ***********");
         WriteLineConsole("DNH drawal is " + drawal);
         WriteLineConsole("DNH maxDemand is " + maxDem);
         WriteLineConsole("DNH maxDemand is at " + maxDemTime + " hrs");
@@ -375,6 +411,24 @@ function fetchFromArrays(ind) {
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        WriteLineConsole("*********** DD DATA ***********");
+        WriteLineConsole("");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("");
+        WriteLineConsole(drawal);
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole(maxDem);
+        WriteLineConsole(0);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(0);
+        WriteLineConsole("*********** DD DATA ***********");
         WriteLineConsole("DD drawal is " + drawal);
         WriteLineConsole("DD maxDemand is " + maxDem);
         WriteLineConsole("DD maxDemand is at " + maxDemTime + " hrs");
@@ -384,11 +438,17 @@ function fetchFromArrays(ind) {
     }
     else if (ind == 4) {
         //GOA DATA
+        var stateGen = "NA";
+        var sslGen = "NA";
+        var geplGen = "NA";
         drawal = "NA";
         timeBlkCol = -1;
         firstBlkRow = -1;
         demandCol = -1;
+        loadSheddingCol = -1;
         dem24Hrs = [];
+        loadShedding24hrs = [];
+        shortFallMUs = -1;
         maxDemTime = 25;
         maxDem = -1;
         dem3hrs = -1;
@@ -401,6 +461,14 @@ function fetchFromArrays(ind) {
             if (val != null) {
                 drawal = val / 1000000;
             }
+            val = findNonNullValueByTag(row, "3) SSL");
+            if (val != null) {
+                sslGen = val / 1000000;
+            }
+            val = findNonNullValueByTag(row, "4) GEPL");
+            if (val != null) {
+                geplGen = val / 1000000;
+            }
             val = findColumnIndexOfStr(row, "Hrs");
             if (!(isNaN(val)) && val >= 0) {
                 timeBlkCol = val;
@@ -409,6 +477,10 @@ function fetchFromArrays(ind) {
             if (!(isNaN(val)) && val >= 0) {
                 demandCol = val;
             }
+            val = findColumnIndexOfStr(row, "Surplus");
+            if (!(isNaN(val)) && val >= 0) {
+                loadSheddingCol = val + 1;
+            }
         }
         //find the 1stTimeBlk row
         firstBlkRow = findRowIndexOfStrInCol(goaDataArray, timeBlkCol, 1, true);
@@ -416,12 +488,40 @@ function fetchFromArrays(ind) {
             for (var hr = 1; hr <= 24; hr++) {
                 dem24Hrs[hr - 1] = Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 1]) + Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 2]) + Number(goaDataArray[firstBlkRow + hr - 1][demandCol + 3]);
             }
+            for (var hr = 1; hr <= 24; hr++) {
+                loadShedding24hrs[hr - 1] = Number(goaDataArray[firstBlkRow + hr - 1][loadSheddingCol]);
+            }
+            var shortFallMUs = loadShedding24hrs.reduce(function (pv, cv) {
+                    return pv + cv;
+                }, 0) / 1000;
         }
         maxDemTime = indexOfMax(dem24Hrs) + 1;
         maxDem = dem24Hrs[maxDemTime - 1];
         dem3hrs = dem24Hrs[2];
         dem19hrs = dem24Hrs[18];
         dem20hrs = dem24Hrs[19];
+        if (!isNaN(sslGen) && !isNaN(geplGen)) {
+            stateGen = Number(sslGen) + Number(geplGen);
+        }
+        WriteLineConsole("*********** GOA DATA ***********");
+        WriteLineConsole("");
+        WriteLineConsole(dem20hrs);
+        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole(stateGen);
+        WriteLineConsole(drawal);
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole(shortFallMUs);
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole("");
+        WriteLineConsole(maxDem);
+        WriteLineConsole(loadShedding24hrs[maxDemTime - 1]);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(loadShedding24hrs[2]);
+        WriteLineConsole("*********** GOA DATA ***********");
+        WriteLineConsole("GOA state generation is " + stateGen);
         WriteLineConsole("GOA drawal is " + drawal);
         WriteLineConsole("GOA maxDemand is " + maxDem);
         WriteLineConsole("GOA maxDemand is at " + maxDemTime + " hrs");
@@ -571,7 +671,7 @@ function fetchFromArrays(ind) {
         WriteLineConsole(dem20hrs);
         WriteLineConsole(dem20hrs);
         WriteLineConsole(0);
-        WriteLineConsole("a");
+        WriteLineConsole("");
         WriteLineConsole(drawal);
         WriteLineConsole(requirement);
         WriteLineConsole(availability);

@@ -9,73 +9,73 @@
 </head>
 <body>
 <div class="wrapper">
-<h2>Upload the Constituent Files here...</h2>
-<table>
-    <tr>
-        <td>Chhattisgarh</td>
-        <td><input type="file" id="ChhattisgarhFileInput"></td>
-        <td>
-            <button id="ChhattisgarhButton" onclick="fetchFromArrays(0)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>DD</td>
-        <td><input type="file" id="DDFileInput"></td>
-        <td>
-            <button id="DDButton" onclick="fetchFromArrays(1)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>DNH</td>
-        <td><input type="file" id="DNHFileInput"></td>
-        <td>
-            <button id="DNHButton" onclick="fetchFromArrays(2)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>ESIL</td>
-        <td><input type="file" id="ESILFileInput"></td>
-        <td>
-            <button id="ESILButton" onclick="fetchFromArrays(3)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Goa</td>
-        <td><input type="file" id="GoaFileInput"></td>
-        <td>
-            <button id="GoaButton" onclick="fetchFromArrays(4)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Gujarat</td>
-        <td><input type="file" id="GujaratFileInput"></td>
-        <td>
-            <button id="GujaratButton" onclick="fetchFromArrays(5)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Madhya Pradesh</td>
-        <td><input type="file" id="MadhyaPradeshFileInput" multiple></td>
-        <td>
-            <button id="MadhyaPradeshButton" onclick="fetchFromArrays(6)">Generate</button>
-        </td>
-    </tr>
-    <tr>
-        <td>Maharashtra</td>
-        <td><input type="file" id="MaharashtraFileInput"></td>
-        <td>
-            <button id="MaharashtraButton" onclick="fetchFromArrays(7)">Generate</button>
-        </td>
-    </tr>
-</table>
-<br>
+    <h3>Upload the Constituent Files here...</h3>
+    <table>
+        <tr>
+            <td>Chhattisgarh</td>
+            <td><input type="file" id="ChhattisgarhFileInput"></td>
+            <td>
+                <button id="ChhattisgarhButton" onclick="fetchFromArrays(0)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>DD</td>
+            <td><input type="file" id="DDFileInput"></td>
+            <td>
+                <button id="DDButton" onclick="fetchFromArrays(1)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>DNH</td>
+            <td><input type="file" id="DNHFileInput"></td>
+            <td>
+                <button id="DNHButton" onclick="fetchFromArrays(2)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>ESIL</td>
+            <td><input type="file" id="ESILFileInput"></td>
+            <td>
+                <button id="ESILButton" onclick="fetchFromArrays(3)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Goa</td>
+            <td><input type="file" id="GoaFileInput"></td>
+            <td>
+                <button id="GoaButton" onclick="fetchFromArrays(4)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Gujarat</td>
+            <td><input type="file" id="GujaratFileInput"></td>
+            <td>
+                <button id="GujaratButton" onclick="fetchFromArrays(5)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Madhya Pradesh</td>
+            <td><input type="file" id="MadhyaPradeshFileInput" multiple></td>
+            <td>
+                <button id="MadhyaPradeshButton" onclick="fetchFromArrays(6)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Maharashtra</td>
+            <td><input type="file" id="MaharashtraFileInput"></td>
+            <td>
+                <button id="MaharashtraButton" onclick="fetchFromArrays(7)" class="generate_button">Generate</button>
+            </td>
+        </tr>
+    </table>
+    <br>
 
-<div class="hidingClass">
-    <div id="console" style="border: 1px solid black;width: 95%;height: 300px;overflow: scroll;">
+    <div class="hidingClass">
+        <div id="console" style="border: 1px solid black;width: 95%;height: 300px;overflow: scroll;">
+        </div>
+        <button onclick="clearConsole()">Clear Text Area</button>
     </div>
-    <button onclick="clearConsole()">ClearConsole</button>
-</div>
-<div class="push"></div>
+    <div class="push"></div>
 </div>
 <div id="footer" class="footer"
      style='background-color:#217346;color:#EEEEEE;width:100%;padding-left:1em;'>
