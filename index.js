@@ -264,7 +264,7 @@ function fetchFromArrays(ind) {
             if (!(isNaN(val)) && val >= 0) {
                 timeBlkCol = val;
             }
-            val = findColumnIndexOfStr(row, "Total ESIL Load (MW)");
+            val = findColumnIndexOfStr(row, "Hourly Load from ISTS (MW)");
             if (!(isNaN(val)) && val >= 0) {
                 demandCol = val;
             }
