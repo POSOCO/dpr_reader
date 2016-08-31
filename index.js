@@ -23,6 +23,7 @@ function fetchFromArrays(ind) {
     if (ind == 0) {
         //It is Chhattisgarh
         var hydroGen = "NA";
+        var solarGen = "NA";
         var drawal = "NA";
         var availabilityExc = "NA";
         var availabilityAux = "NA";
@@ -69,6 +70,11 @@ function fetchFromArrays(ind) {
             if (!(isNaN(val)) && val >= 0) {
                 loadSheddingCol = val;
             }
+            val = findColumnIndexOfStr(row, "TOTAL SOLAR GEN IN MU");
+            if (!(isNaN(val)) && val >= 0) {
+                var solarCol = val;
+                var solarRow = i;
+            }
         }
         //find the 1stTimeBlk row
         firstBlkRow = findRowIndexOfStrInCol(csebArray, timeBlkCol, 1, true);
@@ -91,6 +97,11 @@ function fetchFromArrays(ind) {
         var shortFallMUs = loadShedding24hrs.reduce(function (pv, cv) {
                 return pv + cv;
             }, 0) / 1000;
+        //find the 1stNonEmpty row
+        var solarValRow = findRowIndexOfNonEmptyInCol(csebArray, solarCol, solarRow + 1);
+        if (solarValRow != -1) {
+            solarGen = csebArray[solarValRow][solarCol];
+        }
         WriteLineConsole("*********** CSEB DATA ***********");
         WriteLineConsole("");
         WriteLineConsole(dem20hrs);
@@ -100,7 +111,7 @@ function fetchFromArrays(ind) {
         WriteLineConsole("");
         WriteLineConsole(availability);
         WriteLineConsole(shortFallMUs);
-        WriteLineConsole("");
+        WriteLineConsole(solarGen);
         WriteLineConsole(hydroGen);
         WriteLineConsole("");
         WriteLineConsole(maxDem);
@@ -736,6 +747,21 @@ function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber, startRowTo
             if (val == cellVal) {
                 return i;
             }
+        }
+    }
+    return -1;
+}
+function findRowIndexOfNonEmptyInCol(reportArray, colIndex, startRowToSearch) {
+    if (startRowToSearch == null || startRowToSearch < 0 || isNaN(startRowToSearch)) {
+        startRowToSearch = 0;
+    }
+    if (colIndex == -1) {
+        return -1;
+    }
+    for (var i = startRowToSearch; i < startRowToSearch + 100; i++) {
+        var cellVal = reportArray[i][colIndex];
+        if (cellVal != null && cellVal.trim() != "") {
+            return i;
         }
     }
     return -1;
