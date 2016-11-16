@@ -104,8 +104,8 @@ function fetchFromArrays(ind) {
         }
         WriteLineConsole("*********** CSEB DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
-        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole(dem19hrs);
+        WriteLineConsole(loadShedding24hrs[18]);
         WriteLineConsole("");
         WriteLineConsole(drawal);
         WriteLineConsole("");
@@ -225,8 +225,8 @@ function fetchFromArrays(ind) {
             }, 0) / 1000;
         WriteLineConsole("*********** MP DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
-        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole(dem19hrs);
+        WriteLineConsole(loadShedding24hrs[18]);
         WriteLineConsole("");
         WriteLineConsole(drawal);
         WriteLineConsole("");
@@ -294,7 +294,7 @@ function fetchFromArrays(ind) {
         dem20hrs = dem24Hrs[19];
         WriteLineConsole("*********** ESIL DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
+        WriteLineConsole(dem19hrs);
         WriteLineConsole(0);
         WriteLineConsole("");
         WriteLineConsole(drawal);
@@ -359,7 +359,7 @@ function fetchFromArrays(ind) {
         dem20hrs = dem24Hrs[19];
         WriteLineConsole("*********** DNH DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
+        WriteLineConsole(dem19hrs);
         WriteLineConsole(0);
         WriteLineConsole("");
         WriteLineConsole(drawal);
@@ -424,7 +424,7 @@ function fetchFromArrays(ind) {
         dem20hrs = dem24Hrs[19];
         WriteLineConsole("*********** DD DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
+        WriteLineConsole(dem19hrs);
         WriteLineConsole(0);
         WriteLineConsole("");
         WriteLineConsole(drawal);
@@ -516,8 +516,8 @@ function fetchFromArrays(ind) {
         }
         WriteLineConsole("*********** GOA DATA ***********");
         WriteLineConsole("");
-        WriteLineConsole(dem20hrs);
-        WriteLineConsole(loadShedding24hrs[19]);
+        WriteLineConsole(dem19hrs);
+        WriteLineConsole(loadShedding24hrs[18]);
         WriteLineConsole(stateGen);
         WriteLineConsole(drawal);
         WriteLineConsole("");
@@ -679,8 +679,8 @@ function fetchFromArrays(ind) {
         dem20hrs = dem24Hrs[19];
         hydroGen = Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro) + Number(lbcpanamhydro);
         WriteLineConsole("*********** GUJARAT DATA ***********");
-        WriteLineConsole(dem20hrs);
-        WriteLineConsole(dem20hrs);
+        WriteLineConsole(dem19hrs);
+        WriteLineConsole(dem19hrs);
         WriteLineConsole(0);
         WriteLineConsole("");
         WriteLineConsole(drawal);
