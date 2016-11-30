@@ -255,69 +255,7 @@ function fetchFromArrays(ind) {
         WriteLineConsole("MP 20HrsDemand is " + dem20hrs);
         WriteLineConsole("MP LoadShedding is " + shortFallMUs + " MUs");
     } else if (ind == 3) {
-        //ESIL DATA
-        drawal = "NA";
-        timeBlkCol = -1;
-        firstBlkRow = -1;
-        demandCol = -1;
-        dem24Hrs = [];
-        maxDemTime = 25;
-        maxDem = -1;
-        dem3hrs = -1;
-        dem19hrs = -1;
-        dem20hrs = -1;
-        var esilDataArray = dprReader.filesAfterReadArrays[consIDs[3]][0];
-        for (var i = 0; i < esilDataArray.length; i++) {
-            row = esilDataArray[i];
-            val = findNonNullValueByTag(row, "Total energy consumption from ISTS:");
-            if (val != null) {
-                drawal = val;
-            }
-            val = findColumnIndexOfStr(row, "Time");
-            if (!(isNaN(val)) && val >= 0) {
-                timeBlkCol = val;
-            }
-            val = findColumnIndexOfStr(row, "Hourly Load from ISTS (MW)");
-            if (!(isNaN(val)) && val >= 0) {
-                demandCol = val;
-            }
-        }
-        //find the 1stTimeBlk row
-        firstBlkRow = findRowIndexOfStrInCol(esilDataArray, timeBlkCol, "00 -01 hrs.", false);
-        if (firstBlkRow != -1) {
-            for (var hr = 1; hr <= 24; hr++) {
-                dem24Hrs[hr - 1] = esilDataArray[firstBlkRow + hr - 1][demandCol];
-            }
-        }
-        maxDemTime = indexOfMax(dem24Hrs) + 1;
-        maxDem = dem24Hrs[maxDemTime - 1];
-        dem3hrs = dem24Hrs[2];
-        dem19hrs = dem24Hrs[18];
-        dem20hrs = dem24Hrs[19];
-        WriteLineConsole("*********** ESIL DATA ***********");
-        WriteLineConsole("");
-        WriteLineConsole(dem19hrs);
-        WriteLineConsole(0);
-        WriteLineConsole("");
-        WriteLineConsole(drawal);
-        WriteLineConsole("");
-        WriteLineConsole(0);
-        WriteLineConsole("");
-        WriteLineConsole("");
-        WriteLineConsole("");
-        WriteLineConsole("");
-        WriteLineConsole(maxDem);
-        WriteLineConsole(0);
-        WriteLineConsole(maxDemTime);
-        WriteLineConsole(dem3hrs);
-        WriteLineConsole(0);
-        WriteLineConsole("*********** ESIL DATA ***********");
-        WriteLineConsole("ESIL drawal is " + drawal);
-        WriteLineConsole("ESIL maxDemand is " + maxDem);
-        WriteLineConsole("ESIL maxDemand is at " + maxDemTime + " hrs");
-        WriteLineConsole("ESIL 3HrsDemand is " + dem3hrs);
-        WriteLineConsole("ESIL 19HrsDemand is " + dem19hrs);
-        WriteLineConsole("ESIL 20HrsDemand is " + dem20hrs);
+        handleESIL();
     }
     else if (ind == 2) {
         handleDNH();
