@@ -1,0 +1,12 @@
+Maharashtra data
+****************
+
+hydro MUs = HYDRO_D (Export1)
+Wind MUs = WIND_D (Export1)
+Solar MUs = SOLAR_D (Export1)
+Availability MUs = TOTALCS_D (Export1)
+Requirement MUs = STATE_EC_D (Export1)
+Time Block Number Column Header = TIME_SRNO (Export4)
+Load Shedding Hourly MW = LOAD_SHEDDING (Export4)
+State Demand Hourly MW = STATE_DEMAND (Export4)
+Frequency Hourly Hz = FREQ (Export4)

@@ -707,6 +707,179 @@ function fetchFromArrays(ind) {
         WriteLineConsole("GUJARAT 3HrsDemand is " + dem3hrs);
         WriteLineConsole("GUJARAT 19HrsDemand is " + dem19hrs);
         WriteLineConsole("GUJARAT 20HrsDemand is " + dem20hrs);
+    } else if (ind == 7) {
+        //Maharashtra data
+        hydroGen = "NA";
+        var hydroGen = "NA";
+        var solarGen = "NA";
+        var windGen = "NA";
+        drawal = "NA";
+        availability = "NA";
+        timeBlkCol = -1;
+        firstBlkRow = -1;
+        demandCol = -1;
+        loadSheddingCol = -1;
+        dem24Hrs = [];
+        loadShedding24hrs = [];
+        var frequencies = [];
+        maxDemTime = 25;
+        maxDem = -1;
+        dem3hrs = -1;
+        dem19hrs = -1;
+        dem20hrs = -1;
+        for (var k = 0; k < 2; k++) {
+            var msebDataArray = dprReader.filesAfterReadArrays[consIDs[7]][k];
+            for (var i = 0; i < msebDataArray.length; i++) {
+                row = msebDataArray[i];
+                val = findColumnIndexOfStr(row, "HYDRO_D");
+                if (!(isNaN(val)) && val >= 0) {
+                    var hydroCol = val;
+                    var hydroRow = i;
+                }
+                val = findColumnIndexOfStr(row, "WIND_D");
+                if (!(isNaN(val)) && val >= 0) {
+                    var windCol = val;
+                    var windRow = i;
+                }
+                val = findColumnIndexOfStr(row, "SOLAR_D");
+                if (!(isNaN(val)) && val >= 0) {
+                    var solarCol = val;
+                    var solarRow = i;
+                }
+                val = findColumnIndexOfStr(row, "TOTALCS_D");
+                if (!(isNaN(val)) && val >= 0) {
+                    var drawalCol = val;
+                    var drawalRow = i;
+                }
+                val = findColumnIndexOfStr(row, "STATE_EC_D");
+                if (!(isNaN(val)) && val >= 0) {
+                    var availabilityCol = val;
+                    var availabilityRow = i;
+                }
+                val = findColumnIndexOfStr(row, "TIME_SRNO");
+                if (!(isNaN(val)) && val >= 0) {
+                    var timeBlkCol = val;
+                    var timeBlkRow = i;
+                }
+                val = findColumnIndexOfStr(row, "LOAD_SHEDDING");
+                if (!(isNaN(val)) && val >= 0) {
+                    var loadSheddingCol = val;
+                    var loadSheddingRow = i;
+                }
+                val = findColumnIndexOfStr(row, "STATE_DEMAND");
+                if (!(isNaN(val)) && val >= 0) {
+                    var demandCol = val;
+                    var demandRow = i;
+                }
+                val = findColumnIndexOfStr(row, "FREQ");
+                if (!(isNaN(val)) && val >= 0) {
+                    var freqCol = val;
+                    var freqRow = i;
+                }
+            }
+            //find the 1stTimeBlk row
+            if (timeBlkCol != -1) {
+                firstBlkRow = findRowIndexOfStrInCol(msebDataArray, timeBlkCol, 1, true);
+            }
+            //find the demand and load shedding columns
+            if (firstBlkRow != -1) {
+                for (var hr = 1; hr <= 24; hr++) {
+                    dem24Hrs[hr - 1] = msebDataArray[firstBlkRow + hr - 1][demandCol];
+                }
+                for (var hr = 1; hr <= 24; hr++) {
+                    loadShedding24hrs[hr - 1] = Number(msebDataArray[firstBlkRow + hr - 1][loadSheddingCol]);
+                }
+                for (var hr = 1; hr <= 24; hr++) {
+                    frequencies[hr - 1] = Number(msebDataArray[firstBlkRow + hr - 1][freqCol]);
+                }
+            }
+            // find the hydro generation
+            //find the 1stNonEmpty row
+            if (hydroCol != -1) {
+                var hydroValRow = findRowIndexOfNonEmptyInCol(msebDataArray, hydroCol, hydroRow + 1);
+                if (hydroValRow != -1) {
+                    hydroGen = msebDataArray[hydroValRow][hydroCol];
+                }
+            }
+            // find the wind generation
+            //find the 1stNonEmpty row
+            if (windCol != -1) {
+                var windValRow = findRowIndexOfNonEmptyInCol(msebDataArray, windCol, windRow + 1);
+                if (windValRow != -1) {
+                    windGen = msebDataArray[windValRow][windCol];
+                }
+            }
+            // find the solar generation
+            //find the 1stNonEmpty row
+            if (solarCol != -1) {
+                var solarValRow = findRowIndexOfNonEmptyInCol(msebDataArray, solarCol, solarRow + 1);
+                if (solarValRow != -1) {
+                    solarGen = msebDataArray[solarValRow][solarCol];
+                }
+            }
+            // find the drawal mus
+            //find the 1stNonEmpty row
+            if (drawalCol != -1) {
+                var drawalValRow = findRowIndexOfNonEmptyInCol(msebDataArray, drawalCol, drawalRow + 1);
+                if (drawalValRow != -1) {
+                    drawal = msebDataArray[drawalValRow][drawalCol];
+                }
+            }
+            // find the requiremnt mus
+            //find the 1stNonEmpty row\
+            if (availabilityCol != -1) {
+                var availabilityValRow = findRowIndexOfNonEmptyInCol(msebDataArray, availabilityCol, availabilityRow + 1);
+                if (availabilityValRow != -1) {
+                    availability = msebDataArray[availabilityValRow][availabilityCol];
+                }
+            }
+            hydroCol = -1;
+            windCol = -1;
+            solarCol = -1;
+            drawalCol = -1;
+            availabilityCol = -1;
+        }
+        maxDemTime = indexOfMax(dem24Hrs) + 1;
+        maxDem = dem24Hrs[maxDemTime - 1];
+        dem3hrs = dem24Hrs[2];
+        dem19hrs = dem24Hrs[18];
+        dem20hrs = dem24Hrs[19];
+        var shortFallMUs = loadShedding24hrs.reduce(function (pv, cv) {
+                return pv + cv;
+            }, 0) / 1000;
+        WriteLineConsole("*********** Maharashtra DATA ***********");
+        WriteLineConsole("");
+        WriteLineConsole(dem19hrs);
+        WriteLineConsole(loadShedding24hrs[18]);
+        WriteLineConsole("");
+        WriteLineConsole(drawal);
+        WriteLineConsole("");
+        WriteLineConsole(availability);
+        WriteLineConsole(shortFallMUs);
+        WriteLineConsole(solarGen);
+        WriteLineConsole(hydroGen);
+        WriteLineConsole(windGen);
+        WriteLineConsole(maxDem);
+        WriteLineConsole(loadShedding24hrs[maxDemTime - 1]);
+        WriteLineConsole(maxDemTime);
+        WriteLineConsole(dem3hrs);
+        WriteLineConsole(loadShedding24hrs[2]);
+        WriteLineConsole("*********** Maharashtra DATA ***********");
+        WriteLineConsole("Maharashtra Hydro generation is " + hydroGen);
+        WriteLineConsole("Maharashtra Solar Generation is " + solarGen);
+        WriteLineConsole("Maharashtra Wind Generation is " + windGen);
+        WriteLineConsole("Maharashtra drawal is " + drawal);
+        WriteLineConsole("Maharashtra availability is " + availability);
+        WriteLineConsole("Maharashtra maxDemand is " + maxDem);
+        WriteLineConsole("Maharashtra maxDemand is at " + maxDemTime + " hrs");
+        WriteLineConsole("Maharashtra 3HrsDemand is " + dem3hrs);
+        WriteLineConsole("Maharashtra 19HrsDemand is " + dem19hrs);
+        WriteLineConsole("Maharashtra 20HrsDemand is " + dem20hrs);
+        WriteLineConsole("Maharashtra LoadShedding is " + shortFallMUs + " MUs");
+        WriteLineConsole("Maharashtra 3 hrs frequency is " + frequencies[2]);
+        WriteLineConsole("Maharashtra 19 hrs frequency is " + frequencies[18]);
+        WriteLineConsole("Maharashtra 20 hrs frequency is " + frequencies[19]);
+        WriteLineConsole("Maharashtra frequencies are " + frequencies);
     }
 }
 
