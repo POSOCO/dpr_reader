@@ -727,6 +727,7 @@ function fetchFromArrays(ind) {
         dem3hrs = -1;
         dem19hrs = -1;
         dem20hrs = -1;
+        var peakHr = 18;
         for (var k = 0; k < 2; k++) {
             var msebDataArray = dprReader.filesAfterReadArrays[consIDs[7]][k];
             for (var i = 0; i < msebDataArray.length; i++) {
@@ -848,9 +849,9 @@ function fetchFromArrays(ind) {
                 return pv + cv;
             }, 0) / 1000;
         WriteLineConsole("*********** Maharashtra DATA ***********");
-        WriteLineConsole("");
         WriteLineConsole(dem19hrs);
-        WriteLineConsole(loadShedding24hrs[18]);
+        WriteLineConsole(dem19hrs - loadShedding24hrs[peakHr]);
+        WriteLineConsole(loadShedding24hrs[peakHr]);
         WriteLineConsole("");
         WriteLineConsole(drawal);
         WriteLineConsole("");
