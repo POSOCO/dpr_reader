@@ -10,3 +10,12 @@ Time Block Number Column Header = TIME_SRNO (Export4)
 Load Shedding Hourly MW = LOAD_SHEDDING (Export4)
 State Demand Hourly MW = STATE_DEMAND (Export4)
 Frequency Hourly Hz = FREQ (Export4)
+
+todos
+*****
+
+dd load shedding not handled
+dnh load shedding not handled
+esil load shedding not handled
+gujarat load shedding not handled
+mseb max dem time right now computed wrt dem + LS

@@ -8,6 +8,7 @@ var drawal_MP = "NA";
 var availabilityExc_MP = "NA";
 var availabilityAux_MP = "NA";
 var availability_MP = "NA";
+var shortFallMUs_MP = "NA";
 var timeBlkCol_MP = -1;
 var firstBlkRow_MP = -1;
 var demandCol_MP = -1;
@@ -110,7 +111,7 @@ function handleMP() {
     dem3hrs_MP = dem24Hrs_MP[2];
     dem19hrs_MP = dem24Hrs_MP[peakHrIndex];
     dem20hrs_MP = dem24Hrs_MP[19];
-    var shortFallMUs = loadShedding24hrs_MP.reduce(function (pv, cv) {
+    shortFallMUs_MP = loadShedding24hrs_MP.reduce(function (pv, cv) {
             return pv + cv;
         }, 0) / 1000;
     WriteLineConsole("*********** MP DATA ***********");
@@ -121,7 +122,7 @@ function handleMP() {
     WriteLineConsole(drawal_MP);
     WriteLineConsole("");
     WriteLineConsole(availability_MP);
-    WriteLineConsole(shortFallMUs);
+    WriteLineConsole(shortFallMUs_MP);
     WriteLineConsole(solarGen_MP);
     WriteLineConsole(hydroGen_MP + hydroGen1_MP + hydroGen2_MP);
     WriteLineConsole(windGen_MP);
@@ -141,5 +142,5 @@ function handleMP() {
     WriteLineConsole("MP 3HrsDemand is " + dem3hrs_MP);
     WriteLineConsole("MP 19HrsDemand is " + dem19hrs_MP);
     WriteLineConsole("MP 20HrsDemand is " + dem20hrs_MP);
-    WriteLineConsole("MP LoadShedding is " + shortFallMUs + " MUs");
+    WriteLineConsole("MP LoadShedding is " + shortFallMUs_MP + " MUs");
 }

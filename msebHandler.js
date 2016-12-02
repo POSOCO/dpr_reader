@@ -4,6 +4,7 @@ var solarGen_MSEB = "NA";
 var windGen_MSEB = "NA";
 var drawal_MSEB = "NA";
 var availability_MSEB = "NA";
+var shortFallMUs_MSEB = "NA";
 var timeBlkCol_MSEB = -1;
 var firstBlkRow_MSEB = -1;
 var demandCol_MSEB = -1;
@@ -151,7 +152,7 @@ function handleMaharashtra() {
     dem3hrs_MSEB = dem24Hrs_MSEB[2];
     dem19hrs_MSEB = dem24Hrs_MSEB[18];
     dem20hrs_MSEB = dem24Hrs_MSEB[19];
-    var shortFallMUs = loadShedding24hrs_MSEB.reduce(function (pv, cv) {
+    shortFallMUs_MSEB = loadShedding24hrs_MSEB.reduce(function (pv, cv) {
             return pv + cv;
         }, 0) / 1000;
     WriteLineConsole("*********** Maharashtra DATA ***********");
@@ -162,14 +163,14 @@ function handleMaharashtra() {
     WriteLineConsole(drawal_MSEB);
     WriteLineConsole("");
     WriteLineConsole(availability_MSEB);
-    WriteLineConsole(shortFallMUs);
+    WriteLineConsole(shortFallMUs_MSEB);
     WriteLineConsole(solarGen_MSEB);
     WriteLineConsole(hydroGen_MSEB);
     WriteLineConsole(windGen_MSEB);
-    WriteLineConsole(maxDem_MSEB);
+    WriteLineConsole(maxDem_MSEB - loadShedding24hrs_MSEB[maxDemTime_MSEB]);
     WriteLineConsole(loadShedding24hrs_MSEB[maxDemTime_MSEB - 1]);
     WriteLineConsole(maxDemTime_MSEB);
-    WriteLineConsole(dem3hrs_MSEB);
+    WriteLineConsole(dem3hrs_MSEB - loadShedding24hrs_MSEB[2]);
     WriteLineConsole(loadShedding24hrs_MSEB[2]);
     WriteLineConsole("*********** Maharashtra DATA ***********");
     WriteLineConsole("Maharashtra Hydro generation is " + hydroGen_MSEB);
@@ -182,7 +183,7 @@ function handleMaharashtra() {
     WriteLineConsole("Maharashtra 3HrsDemand is " + dem3hrs_MSEB);
     WriteLineConsole("Maharashtra 19HrsDemand is " + dem19hrs_MSEB);
     WriteLineConsole("Maharashtra 20HrsDemand is " + dem20hrs_MSEB);
-    WriteLineConsole("Maharashtra LoadShedding is " + shortFallMUs + " MUs");
+    WriteLineConsole("Maharashtra LoadShedding is " + shortFallMUs_MSEB + " MUs");
     WriteLineConsole("Maharashtra 3 hrs frequency is " + frequencies_MSEB[2]);
     WriteLineConsole("Maharashtra 19 hrs frequency is " + frequencies_MSEB[18]);
     WriteLineConsole("Maharashtra 20 hrs frequency is " + frequencies_MSEB[19]);
