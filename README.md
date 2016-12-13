@@ -4,9 +4,9 @@ A web App that reads the reports of constituents and generators and produces use
 Watch the demo of this project <a href="https://posoco.github.io/dpr_reader/" target="_blank">here</a>
 
 ## Instructions
-1. The web page contains upload file buttons where each constituent daily report file is to be uploaded
+1. This web app contains upload file buttons where each constituent daily report file is to be uploaded
 
-2. The uploaded file should be csv file only. If the file is not a csv file, please save the excel file as a csv and the upload the file
+2. The uploaded file should be csv file only. If the file is not a csv file, please save the excel file as a csv and then upload the file
 
 3. For MP files, upload the 2 csv files simultaneously from the mail
 
