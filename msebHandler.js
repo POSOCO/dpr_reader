@@ -17,16 +17,14 @@ var maxDem_MSEB = -1;
 var dem3hrs_MSEB = -1;
 var dem19hrs_MSEB = -1;
 var dem20hrs_MSEB = -1;
+
+
 function handleMaharashtra() {
     hydroGen_MSEB = "NA";
     solarGen_MSEB = "NA";
     windGen_MSEB = "NA";
     drawal_MSEB = "NA";
     availability_MSEB = "NA";
-    timeBlkCol_MSEB = -1;
-    firstBlkRow_MSEB = -1;
-    demandCol_MSEB = -1;
-    loadSheddingCol_MSEB = -1;
     dem24Hrs_MSEB = [];
     loadShedding24hrs_MSEB = [];
     frequencies_MSEB = [];
@@ -36,52 +34,62 @@ function handleMaharashtra() {
     dem19hrs_MSEB = -1;
     dem20hrs_MSEB = -1;
     for (var k = 0; k < 2; k++) {
+        timeBlkCol_MSEB = -1;
+        firstBlkRow_MSEB = -1;
+        demandCol_MSEB = -1;
+        loadSheddingCol_MSEB = -1;
+        var hydroCol_MSEB = -1;
+        var windCol_MSEB = -1;
+        var solarCol_MSEB = -1;
+        var drawalCol_MSEB = -1;
+        var availabilityCol_MSEB = -1;
+        var freqCol_MSEB = -1;
         var msebDataArray = dprReader.filesAfterReadArrays[consIDs[7]][k];
         for (var i = 0; i < msebDataArray.length; i++) {
             var row = msebDataArray[i];
             var val = findColumnIndexOfStr(row, "HYDRO_D");
             if (!(isNaN(val)) && val >= 0) {
-                var hydroCol_MSEB = val;
+                hydroCol_MSEB = val;
                 var hydroRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "WIND_D");
             if (!(isNaN(val)) && val >= 0) {
-                var windCol_MSEB = val;
+                windCol_MSEB = val;
                 var windRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "SOLAR_D");
             if (!(isNaN(val)) && val >= 0) {
-                var solarCol_MSEB = val;
+                solarCol_MSEB = val;
                 var solarRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "TOTALCS_D");
             if (!(isNaN(val)) && val >= 0) {
-                var drawalCol_MSEB = val;
+                drawalCol_MSEB = val;
                 var drawalRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "STATE_EC_D");
             if (!(isNaN(val)) && val >= 0) {
-                var availabilityCol_MSEB = val;
+                availabilityCol_MSEB = val;
                 var availabilityRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "TIME_SRNO");
             if (!(isNaN(val)) && val >= 0) {
-                var timeBlkCol_MSEB = val;
+                timeBlkCol_MSEB = val;
                 var timeBlkRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "LOAD_SHEDDING");
             if (!(isNaN(val)) && val >= 0) {
-                var loadSheddingCol_MSEB = val;
+                loadSheddingCol_MSEB = val;
                 var loadSheddingRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "STATE_DEMAND");
             if (!(isNaN(val)) && val >= 0) {
-                var demandCol_MSEB = val;
+                demandCol_MSEB = val;
                 var demandRow_MSEB = i;
             }
             val = findColumnIndexOfStr(row, "FREQ");
             if (!(isNaN(val)) && val >= 0) {
-                var freqCol_MSEB = val;
+                freqCol_MSEB = val;
                 var freqRow_MSEB = i;
             }
         }
@@ -141,11 +149,6 @@ function handleMaharashtra() {
                 availability_MSEB = msebDataArray[availabilityValRow_MSEB][availabilityCol_MSEB];
             }
         }
-        hydroCol_MSEB = -1;
-        windCol_MSEB = -1;
-        solarCol_MSEB = -1;
-        drawalCol_MSEB = -1;
-        availabilityCol_MSEB = -1;
     }
     maxDemTime_MSEB = indexOfMax(dem24Hrs_MSEB) + 1;
     maxDem_MSEB = dem24Hrs_MSEB[maxDemTime_MSEB - 1];
