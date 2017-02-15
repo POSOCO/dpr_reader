@@ -164,7 +164,7 @@ function handleGujarat(){
     dem3hrs_GEB = dem24Hrs_GEB[2];
     dem19hrs_GEB = dem24Hrs_GEB[peakHrIndex];
     dem20hrs_GEB = dem24Hrs_GEB[19];
-    hydroGen_GEB = Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro_GEB) + Number(lbcpanamhydro_GEB);
+    hydroGen_GEB = Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro_GEB) + Number(pvthydro_GEB);
     WriteLineConsole("*********** GUJARAT DATA ***********");
     WriteLineConsole(dem19hrs_GEB);
     WriteLineConsole(dem19hrs_GEB);
