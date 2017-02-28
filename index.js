@@ -89,7 +89,7 @@ function findRowIndexOfNonEmptyInCol(reportArray, colIndex, startRowToSearch) {
     if (colIndex == -1) {
         return -1;
     }
-    for (var i = startRowToSearch; i < startRowToSearch + 100; i++) {
+    for (var i = startRowToSearch; i < reportArray.length && i < startRowToSearch + 100; i++) {
         var cellVal = reportArray[i][colIndex];
         if (cellVal != null && cellVal.trim() != "") {
             return i;
