@@ -68,7 +68,7 @@ function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber, startRowTo
     if (colIndex == -1) {
         return -1;
     }
-    for (var i = startRowToSearch; i < reportArray.length; i++) {
+    for (var i = startRowToSearch; i < reportArray.length && i < startRowToSearch + 100; i++) {
         var cellVal = reportArray[i][colIndex];
         if (isNumber) {
             if (!isNaN(cellVal) && cellVal.trim() != "" && Number(val) == Number(cellVal)) {
