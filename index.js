@@ -61,7 +61,7 @@ function findColumnIndexOfStr(row, tag, isCaseInsensitive) {
     var colNum = row.indexOf(tag);
     if(colNum != -1){
        return colNum;
-    } else{
+    } else if(isCaseInsensitive == true){
         for(var i = 0; i < row.length; i++){
             if(row[i].toLowerCase() == tag.toLowerCase()){
                return i;
