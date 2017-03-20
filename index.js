@@ -57,8 +57,18 @@ function indexOfMax(arr) {
     return maxIndex;
 }
 
-function findColumnIndexOfStr(row, tag) {
-    return row.indexOf(tag);
+function findColumnIndexOfStr(row, tag, isCaseInsensitive) {
+    var colNum = row.indexOf(tag);
+    if(colNum != -1){
+       return colNum;
+    } else{
+        for(var i = 0; i < row.length; i++){
+            if(row[i].toLowerCase() == tag.toLowerCase()){
+               return i;
+            }
+        }
+    }
+    return -1;
 }
 
 function findRowIndexOfStrInCol(reportArray, colIndex, val, isNumber, startRowToSearch) {
