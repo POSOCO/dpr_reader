@@ -52,7 +52,7 @@ function handleGoa() {
         if (!(isNaN(val)) && val >= 0) {
             timeBlkCol_GOA = val;
         }
-        val = findColumnIndexOfStr(row, "Demand in MW");
+        val = findColumnIndexOfStr(row, "Demand in MW", true);
         if (!(isNaN(val)) && val >= 0) {
             demandCol_GOA = val;
         }
