@@ -59,12 +59,12 @@ function indexOfMax(arr) {
 
 function findColumnIndexOfStr(row, tag, isCaseInsensitive) {
     var colNum = row.indexOf(tag);
-    if(colNum != -1){
-       return colNum;
-    } else if(typeof isCaseInsensitive != 'undefined' && isCaseInsensitive == true){
-        for(var i = 0; i < row.length; i++){
-            if(row[i].toLowerCase() == tag.toLowerCase()){
-               return i;
+    if (colNum != -1) {
+        return colNum;
+    } else if (typeof isCaseInsensitive != 'undefined' && isCaseInsensitive == true) {
+        for (var i = 0; i < row.length; i++) {
+            if (row[i].toLowerCase() == tag.toLowerCase()) {
+                return i;
             }
         }
     }
@@ -126,4 +126,27 @@ function findNonNullValueToRight(row, searchTagIndex) {
         }
     }
     return "Not Found...";
+}
+
+function printFinalResult() {
+    WriteTabbedInConsole(dem19hrs_GEB, "", "", dem19hrs_MSEB, "", "", "", "");
+    WriteTabbedInConsole(dem19hrs_GEB, dem19hrs_MP, dem19hrs_CSEB, dem19hrs_MSEB - loadShedding24hrs_MSEB[peakHrIndex], dem19hrs_GOA, dem19hrs_DD, dem19hrs_DNH, dem19hrs_ESIL);
+    WriteTabbedInConsole(0, loadShedding24hrs_MP[peakHrIndex], loadShedding24hrs_CSEB[peakHrIndex], loadShedding24hrs_MSEB[peakHrIndex], loadShedding24hrs_GOA[peakHrIndex], 0, 0, 0);
+    WriteTabbedInConsole("", "", "", "", stateGen_GOA, "", "", "");
+    WriteTabbedInConsole(drawal_GEB, drawal_MP, drawal_CSEB, drawal_MSEB, drawal_GOA, drawal_DD, drawal_DNH, drawal_ESIL);
+    WriteTabbedInConsole(requirement_GEB, "", "", "", "", "", drawal_DNH, "");
+    WriteTabbedInConsole(availability_GEB, availability_MP, availability_CSEB, availability_MSEB, "", "", drawal_DNH, 0);
+    WriteTabbedInConsole(requirement_GEB - availability_GEB, shortFallMUs_MP, shortFallMUs_CSEB, shortFallMUs_MSEB, shortFallMUs_GOA, "", "", "");
+    WriteTabbedInConsole(solarGen_GEB, solarGen_MP, solarGen_CSEB, solarGen_MSEB, "", "", "", "");
+    WriteTabbedInConsole(hydroGen_GEB, hydroGen_MP + hydroGen1_MP + hydroGen2_MP, hydroGen_CSEB, hydroGen_MSEB, "", "", "", "");
+    WriteTabbedInConsole(windGen_GEB, windGen_MP, "", windGen_MSEB, "", "", "", "");
+    WriteTabbedInConsole(maxDem_GEB, maxDem_MP, maxDem_CSEB, maxDem_MSEB - loadShedding24hrs_MSEB[maxDemTime_MSEB], maxDem_GOA, maxDem_DD, maxDem_DNH, maxDem_ESIL);
+    WriteTabbedInConsole(0, loadShedding24hrs_MP[maxDemTime_MP - 1], loadShedding24hrs_CSEB[maxDemTime_CSEB - 1], loadShedding24hrs_MSEB[maxDemTime_MSEB - 1], loadShedding24hrs_GOA[maxDemTime_GOA - 1], 0, 0, 0);
+    WriteTabbedInConsole(maxDemTime_GEB, maxDemTime_MP, maxDemTime_CSEB, maxDemTime_MSEB, maxDemTime_GOA, maxDemTime_DD, maxDemTime_DNH, maxDemTime_ESIL);
+    WriteTabbedInConsole(dem3hrs_GEB, dem3hrs_MP, dem3hrs_CSEB, dem3hrs_MSEB - loadShedding24hrs_MSEB[2], dem3hrs_GOA, dem3hrs_DD, dem3hrs_DNH, dem3hrs_ESIL);
+    WriteTabbedInConsole(0, loadShedding24hrs_MP[2], loadShedding24hrs_CSEB[2], loadShedding24hrs_MSEB[2], loadShedding24hrs_GOA[2], 0, 0, 0);
+}
+
+function WriteTabbedInConsole(elems) {
+    WriteLineConsole(elems.join("   "));
 }
