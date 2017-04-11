@@ -9,6 +9,8 @@ var timeBlkCol_CSEB = -1;
 var firstBlkRow_CSEB = -1;
 var demandCol_CSEB = -1;
 var loadSheddingCol_CSEB = -1;
+var irMUImpCol_CSEB = -1;
+var irMUHeaderRow_CSEB = -1;
 var dem24Hrs_CSEB = [];
 var loadShedding24hrs_CSEB = [];
 var maxDemTime_CSEB = 25;
@@ -29,6 +31,8 @@ function handleCSEB() {
     firstBlkRow_CSEB = -1;
     demandCol_CSEB = -1;
     loadSheddingCol_CSEB = -1;
+    irMUImpCol_CSEB = -1;
+    irMUHeaderRow_CSEB = -1;
     dem24Hrs_CSEB = [];
     loadShedding24hrs_CSEB = [];
     maxDemTime_CSEB = 25;
@@ -74,6 +78,11 @@ function handleCSEB() {
             var solarCol_CSEB = val;
             var solarRow_CSEB = i;
         }
+		val = findColumnIndexOfStr(row, "IMPORT (in MU)");
+        if (!(isNaN(val)) && val >= 0) {
+            irMUHeaderRow_CSEB = i;
+            irMUImpCol_CSEB = val;
+        }        
     }
     //find the 1stTimeBlk row
     firstBlkRow_CSEB = findRowIndexOfStrInCol(csebArray, timeBlkCol_CSEB, 1, true);
