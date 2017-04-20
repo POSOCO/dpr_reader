@@ -153,7 +153,7 @@ function handleMaharashtra() {
     maxDemTime_MSEB = indexOfMax(dem24Hrs_MSEB) + 1;
     maxDem_MSEB = dem24Hrs_MSEB[maxDemTime_MSEB - 1];
     dem3hrs_MSEB = dem24Hrs_MSEB[2];
-    dem19hrs_MSEB = dem24Hrs_MSEB[18];
+    dem19hrs_MSEB = dem24Hrs_MSEB[peakHrIndex];
     dem20hrs_MSEB = dem24Hrs_MSEB[19];
     shortFallMUs_MSEB = loadShedding24hrs_MSEB.reduce(function (pv, cv) {
             return pv + cv;
