@@ -47,7 +47,7 @@ function handleESIL() {
     maxDemTime_ESIL = indexOfMax(dem24Hrs_ESIL) + 1;
     maxDem_ESIL = dem24Hrs_ESIL[maxDemTime_ESIL - 1];
     dem3hrs_ESIL = dem24Hrs_ESIL[2];
-    dem19hrs_ESIL = dem24Hrs_ESIL[18];
+    dem19hrs_ESIL = dem24Hrs_ESIL[peakHrIndex];
     dem20hrs_ESIL = dem24Hrs_ESIL[19];
     WriteLineConsole("*********** ESIL DATA ***********");
     WriteLineConsole("");
