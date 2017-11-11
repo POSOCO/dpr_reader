@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>WBES Schedules Fetcher</title>
+</head>
+<body>
+<label for="dateInput">Date (dd/mm/yyyy): </label>
+<input type="text" id="dateInput">
+<label for="latestRevInp">Revision: </label>
+<input type="text" id="latestRevInp">
+<br>
+<button onclick="createScheduleLinks()">Create Links For Download</button>
+<button onclick="clickAllLinks()">Click All Links</button>
+
+<div id="scheduleLinksDiv">
+</div>
+<script src="schedules.js"></script>
+</body>
+</html>
