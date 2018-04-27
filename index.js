@@ -5,7 +5,7 @@ var dprReader = new DPRReader();
 var consIDs = ["ChhattisgarhFileInput", "DDFileInput", "DNHFileInput", "ESILFileInput", "GoaFileInput", "GujaratFileInput", "MadhyaPradeshFileInput", "MaharashtraFileInput"];
 dprReader.setConsIDs(consIDs);
 
-var peakHrIndex = 18;
+var peakHrIndex = 19;
 
 window.onload = function () {
     for (var i = 0; i < consIDs.length; i++) {
