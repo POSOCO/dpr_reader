@@ -13,6 +13,8 @@ var timeBlkCol_GEB = -1;
 var firstBlkRow_GEB = -1;
 var demandCol_GEB = -1;
 var dem24Hrs_GEB = [];
+var loadSheddingCol_GEB = -1;
+var loadShedding24hrs_GEB = [];
 var maxDemTime_GEB = 25;
 var maxDem_GEB = -1;
 var dem3hrs_GEB = -1;
@@ -41,6 +43,8 @@ function handleGujarat(){
     firstBlkRow_GEB = -1;
     demandCol_GEB = -1;
     dem24Hrs_GEB = [];
+    loadSheddingCol_GEB = -1;
+    loadShedding24hrs_GEB = [];
     maxDemTime_GEB = 25;
     maxDem_GEB = -1;
     dem3hrs_GEB = -1;
@@ -53,6 +57,7 @@ function handleGujarat(){
     khpscol_GEB = -1;
     lbcpanamhydro_GEB = -1;
     pvthydro_GEB = -1;
+    
 
     var gujaratDataArray = dprReader.filesAfterReadArrays[consIDs[5]][0];
     for (var i = 0; i < gujaratDataArray.length; i++) {
@@ -133,6 +138,9 @@ function handleGujarat(){
             for (var hr = 1; hr <= 24; hr++) {
                 dem24Hrs_GEB[hr - 1] = Number(gujaratDataArray[firstBlkRow_GEB + hr - 1][demandCol_GEB]);
             }
+            for (var hr = 1; hr <= 24; hr++) {
+                loadShedding24hrs_GEB[hr - 1] = Number(gujaratDataArray[firstBlkRow_GEB + hr - 1][loadSheddingCol_GEB]);
+            }
         }
     }
 //find the uhpshydro value
@@ -166,9 +174,9 @@ function handleGujarat(){
     dem20hrs_GEB = dem24Hrs_GEB[19];
     hydroGen_GEB = Number(uhpshydro) + Number(khpshydro) + Number(lbcpanamhydro_GEB) + Number(pvthydro_GEB);
     WriteLineConsole("*********** GUJARAT DATA ***********");
+    WriteLineConsole(dem19hrs_GEB+loadShedding24hrs_GEB[peakHrIndex]);
     WriteLineConsole(dem19hrs_GEB);
-    WriteLineConsole(dem19hrs_GEB);
-    WriteLineConsole(0);
+    WriteLineConsole(loadShedding24hrs_GEB[peakHrIndex]);
     WriteLineConsole("");
     WriteLineConsole(drawal_GEB);
     WriteLineConsole(requirement_GEB);
@@ -177,11 +185,11 @@ function handleGujarat(){
     WriteLineConsole(solarGen_GEB);
     WriteLineConsole(hydroGen_GEB);
     WriteLineConsole(windGen_GEB);
-    WriteLineConsole(maxDem_GEB);
-    WriteLineConsole(0);
+    WriteLineConsole(maxDem_GEB+loadShedding24hrs_GEB[maxDemTime_GEB]);
+    WriteLineConsole(loadShedding24hrs_GEB[maxDemTime_GEB]);
     WriteLineConsole(maxDemTime_GEB);
     WriteLineConsole(dem3hrs_GEB);
-    WriteLineConsole(0);
+    WriteLineConsole(loadShedding24hrs_GEB[2]);
     WriteLineConsole("*********** GUJARAT DATA ***********");
     WriteLineConsole("GUJARAT drawal is " + drawal_GEB);
     WriteLineConsole("GUJARAT availability is " + availability_GEB);
