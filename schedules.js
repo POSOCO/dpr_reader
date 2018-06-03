@@ -29,7 +29,7 @@ function createScheduleLinks() {
     var spanEl;
     // get the links of all net schedules
     for (var i = 0; i < constituents.length; i++) {
-        linkUrl = "http://103.7.130.121/wbes/ReportNetSchedule/ExportNetScheduleSummaryToPDF?scheduleDate=" + dateStr + "&sellerId=" + constituentIds_g[constituents[i]] + "&revisionNumber=" + revNum + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&regionId=2&byDetails=1&isBuyer=1&isBuyer=1";
+        linkUrl = "http://scheduling.wrldc.in/wbes/ReportNetSchedule/ExportNetScheduleSummaryToPDF?scheduleDate=" + dateStr + "&sellerId=" + constituentIds_g[constituents[i]] + "&revisionNumber=" + revNum + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&regionId=2&byDetails=1&isBuyer=1&isBuyer=1";
 
         spanEl = document.createElement('span');
         spanEl.innerHTML = constituents[i] + 'Net Schedule';
@@ -51,7 +51,7 @@ function createScheduleLinks() {
     }
 
     // get the link of All generators Full Schedules
-    linkUrl = "http://103.7.130.121/wbes/ReportFullSchedule/ExportFullScheduleInjSummaryToPDF?scheduleDate=" + dateStr + "&sellerId=ALL&revisionNumber=" + revNum + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&regionId=2&byDetails=0&isDrawer=0&isBuyer=0";
+    linkUrl = "http://scheduling.wrldc.in/wbes/ReportFullSchedule/ExportFullScheduleInjSummaryToPDF?scheduleDate=" + dateStr + "&sellerId=ALL&revisionNumber=" + revNum + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&regionId=2&byDetails=0&isDrawer=0&isBuyer=0";
     spanEl = document.createElement('span');
     spanEl.innerHTML = 'All Generators Injection Schedules';
     scheduleLinksDiv.appendChild(spanEl);
@@ -71,7 +71,7 @@ function createScheduleLinks() {
     scheduleLinksDiv.appendChild(document.createElement("br"));
 
     // get the link of All generators DC
-    linkUrl = "http://103.7.130.121/wbes/Report/ExportDeclarationRldcToPDF?scheduleDate=" + dateStr + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&Region=2&UtilId=ALL&Revision=" + revNum + "&isBuyer=0&byOnBar=0";
+    linkUrl = "http://scheduling.wrldc.in/wbes/Report/ExportDeclarationRldcToPDF?scheduleDate=" + dateStr + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&Region=2&UtilId=ALL&Revision=" + revNum + "&isBuyer=0&byOnBar=0&byDCSchd=0";
     spanEl = document.createElement('span');
     spanEl.innerHTML = 'All Generators Declared Capacities';
     scheduleLinksDiv.appendChild(spanEl);
@@ -91,7 +91,7 @@ function createScheduleLinks() {
     scheduleLinksDiv.appendChild(document.createElement("br"));
 
     // get the link of All generators DC
-    linkUrl = "http://103.7.130.121/wbes/Report/ExportFlowGateScheduleToPDF?scheduleDate=" + dateStr + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&revisionNumber=" + revNum + "&pathId=0&scheduleType=-1&isLink=1";
+    linkUrl = "http://scheduling.wrldc.in/wbes/Report/ExportFlowGateScheduleToPDF?scheduleDate=" + dateStr + "&getTokenValue=" + new Date().getTime() + "&fileType=csv&revisionNumber=" + revNum + "&pathId=0&scheduleType=-1&isLink=1";
     spanEl = document.createElement('span');
     spanEl.innerHTML = 'Inter Regional Schedules';
     scheduleLinksDiv.appendChild(spanEl);
