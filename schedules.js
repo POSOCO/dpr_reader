@@ -15,7 +15,7 @@ var constituentIds_g = {
 
 window.onload = function () {
     var dateYest = new Date(new Date() - 86400000);
-    document.getElementById('dateInput').value = dateYest.getDate() + "-" + (dateYest.getMonth() + 1) + "-" + dateYest.getFullYear();
+    document.getElementById('dateInput').value = makeTwoDigits(dateYest.getDate()) + "-" + makeTwoDigits(dateYest.getMonth() + 1) + "-" + dateYest.getFullYear();
     document.getElementById('latestRevInp').value = 1;
 };
 
@@ -118,4 +118,13 @@ function clickAllLinks() {
     }
 }
 
+function makeTwoDigits(x) {
+    if (isNaN(x)) {
+        return x;
+    }
+    if (x < 10) {
+        return "0" + x;
+    }
+    return x;
+}
 
