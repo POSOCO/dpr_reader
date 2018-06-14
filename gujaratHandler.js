@@ -185,8 +185,8 @@ function handleGujarat(){
     WriteLineConsole(solarGen_GEB);
     WriteLineConsole(hydroGen_GEB);
     WriteLineConsole(windGen_GEB);
-    WriteLineConsole(maxDem_GEB+loadShedding24hrs_GEB[maxDemTime_GEB]);
-    WriteLineConsole(loadShedding24hrs_GEB[maxDemTime_GEB]);
+    WriteLineConsole(maxDem_GEB+loadShedding24hrs_GEB[maxDemTime_GEB - 1]);
+    WriteLineConsole(loadShedding24hrs_GEB[maxDemTime_GEB - 1]);
     WriteLineConsole(maxDemTime_GEB);
     WriteLineConsole(dem3hrs_GEB);
     WriteLineConsole(loadShedding24hrs_GEB[2]);
